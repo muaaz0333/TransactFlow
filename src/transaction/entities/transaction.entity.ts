@@ -1,13 +1,14 @@
 import { TransactionStatus } from '../../users/enums/transaction';
 import {
   Column,
-  CreateDateColumn,
+  CreateDateColumn, Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
+@Entity('transactions')
 export class Transaction {
   @PrimaryGeneratedColumn()
   id: string;
