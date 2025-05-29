@@ -32,10 +32,18 @@ export class UsersService {
         name,
         phoneNumber,
       });
+      const token = await this.sendVerificationEmail(user);
 
       await this.usersRepo.save(user);
-      return { message: 'User created successfully.' };
+      return {
+        message: 'User created successfully.',
+        verificationToken: token,
+      };
     } catch (e) {
+      console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
       throw new Error('Please try again after few minutes');
     }
   }
@@ -50,6 +58,19 @@ export class UsersService {
           HttpStatus.REQUEST_TIMEOUT,
         );
       }
+
+      if (!user.verified) {
+        throw new HttpException(
+          'Please verify your email before logging in',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      if (user.status != 'active') {
+        user.status = 'active';
+        await this.usersRepo.save(user);
+      }
+
       const payload = { sub: user.id, email: user.email };
       const token = await this.jwtService.signAsync(payload);
 
@@ -61,10 +82,54 @@ export class UsersService {
           name: user.name,
           username: user.username,
           phoneNumber: user.phoneNumber,
+          status: user.status,
+          verified: user.verified,
         },
       };
     } catch (e) {
-      throw new HttpException('Unauthorized', HttpStatus.BAD_REQUEST);
+      console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      throw new HttpException('Failed to login', HttpStatus.FORBIDDEN);
+    }
+  }
+
+  async sendVerificationEmail(user: User) {
+    const payload = { sub: user.id, email: user.email };
+    const token = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '1h',
+    });
+    return token;
+  }
+
+  async verifyEmail(token: string): Promise<string> {
+    try {
+      const decoded = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECRET,
+      });
+      const user = await this.usersRepo.findOne({
+        where: { email: decoded.email },
+      });
+
+      if (!user) {
+        throw new HttpException('USer not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (user.verified) {
+        return 'User is already verified';
+      }
+
+      user.verified = true;
+      await this.usersRepo.save(user);
+      return 'Email verified Successfully.';
+    } catch (e) {
+      console.error(e);
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      throw new HttpException('Failed to verify email', HttpStatus.FORBIDDEN);
     }
   }
 

@@ -25,13 +25,13 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: false })
   verified: boolean;
 
   @Column()
   phoneNumber: string;
 
-  @Column()
+  @Column({ default: 'inactive' })
   status: string;
 
   @CreateDateColumn()
