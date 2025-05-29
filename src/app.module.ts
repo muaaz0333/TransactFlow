@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { WalletsModule } from './wallets/wallets.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
       logging: true,
     }),
+    WalletsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
