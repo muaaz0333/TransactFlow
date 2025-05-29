@@ -6,6 +6,7 @@ import { TransactionModule } from './transaction/transaction.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { WalletsModule } from './wallets/wallets.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { WalletsModule } from './wallets/wallets.module';
       logging: true,
     }),
     WalletsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
