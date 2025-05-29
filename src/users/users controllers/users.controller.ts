@@ -6,18 +6,33 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  UnauthorizedException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from '../user services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { LoginDto } from '../dto/login.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @Post('/register')
+  async create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Post('/login')
+  async login(@Body() loginDto: LoginDto) {
+    return this.usersService.login(loginDto);
+  }
+
+  @Get('/verify-email')
+  async verifyEmail(@Query('token') token: string) {
+    await this.usersService.verifyEmail(token);
   }
 
   @Get()
