@@ -35,6 +35,15 @@ export class UsersController {
     await this.usersService.verifyEmail(token);
   }
 
+  @Post('/resend-verification')
+  async resendVerification(@Body('email') email: string) {
+    const token = await this.usersService.resendVerificationEmail(email);
+    return {
+      message: 'Verification email has been sent',
+      verificationToken: token,
+    };
+  }
+
   @Get()
   findAll() {
     return this.usersService.findAll();

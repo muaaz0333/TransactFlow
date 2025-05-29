@@ -133,6 +133,21 @@ export class UsersService {
     }
   }
 
+  async resendVerificationEmail(email: string) {
+    const user = await this.usersRepo.findOne({ where: { email } });
+    console.log('fetched user', user);
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (user.verified) {
+      throw new HttpException('User already verified', HttpStatus.FORBIDDEN);
+    }
+
+    return this.sendVerificationEmail(user);
+  }
+
   findAll() {
     return `This action returns all users`;
   }
