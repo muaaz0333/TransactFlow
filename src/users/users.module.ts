@@ -4,10 +4,14 @@ import { UsersController } from './users controllers/users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Global()
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,

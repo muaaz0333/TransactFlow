@@ -114,7 +114,7 @@ export class UsersService {
       });
 
       if (!user) {
-        throw new HttpException('USer not found', HttpStatus.NOT_FOUND);
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
 
       if (user.verified) {
