@@ -7,9 +7,6 @@ import {
   Param,
   Delete,
   Query,
-  UnauthorizedException,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from '../user services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';

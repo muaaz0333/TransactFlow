@@ -26,7 +26,7 @@ export class User {
   password: string;
 
   @Column({ default: false })
-  verified: boolean;
+  isKycVerified: boolean;
 
   @Column()
   phoneNumber: string;
