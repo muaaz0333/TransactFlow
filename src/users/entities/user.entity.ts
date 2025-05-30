@@ -2,11 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  OneToMany, OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Transaction } from '../../transaction/entities/transaction.entity';
+import { Wallet } from '../../wallets/entities/wallet.entity';
 
 @Entity('users')
 export class User {
@@ -40,9 +41,12 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.sender)
+  @OneToMany(() => Transaction, (t) => t.sender)
   sentTransactions: Transaction[];
 
-  @OneToMany(() => Transaction, (transaction) => transaction.receiver)
+  @OneToMany(() => Transaction, (t) => t.receiver)
   receivedTransactions: Transaction[];
+
+  @OneToOne(() => Wallet, (w) => w.user)
+  wallet: Wallet;
 }

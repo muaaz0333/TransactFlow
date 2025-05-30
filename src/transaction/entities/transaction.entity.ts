@@ -10,16 +10,16 @@ import { User } from '../../users/entities/user.entity';
 
 @Entity('transactions')
 export class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.sentTransactions)
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'sender_id' })
-  sender: string;
+  sender: User;
 
-  @ManyToOne(() => User, (user) => user.receivedTransactions)
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'receiver_id' })
-  receiver: string;
+  receiver: User;
 
   @Column('decimal', { precision: 12, scale: 2 })
   amount: number;
@@ -33,6 +33,9 @@ export class Transaction {
 
   @Column({ type: 'text', nullable: true })
   description: string;
+
+  @Column({ nullable: true })
+  idempotencyKey: string;
 
   @CreateDateColumn({ name: 'createdAt' })
   createdAt: Date;
