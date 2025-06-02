@@ -47,6 +47,6 @@ export class User {
   @OneToMany(() => Transaction, (t) => t.receiver)
   receivedTransactions: Transaction[];
 
-  @OneToOne(() => Wallet, (w) => w.user)
+  @OneToOne(() => Wallet, (w) => w.user, {cascade: true})
   wallet: Wallet;
 }
