@@ -60,31 +60,19 @@ export class WalletsService {
     };
   }
 
-  async getWalletPrivateKey(walletId: string): Promise<string> {
-    const wallet = await this.walletRepo.findOne({ where: { id: walletId } });
+  async getMyWallet(userId: string) {
+    const wallet = await this.walletRepo.findOne({
+      where: { user: { id: userId } },
+      relations: ['user'],
+    });
 
     if (!wallet) {
       throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND);
     }
 
-    const password = this.configService.get<string>('PRIVATE_KEY_SECRET');
-    if (!password) {
-      throw new Error(
-        'PRIVATE_KEY_SECRET is not defined in environment variables',
-      );
-    }
-    const decryptedWallet = await ethers.Wallet.fromEncryptedJson(
-      wallet.encryptedPrivateKey,
-      password,
-    );
-
-    return decryptedWallet.privateKey;
-  }
-
-  getWalletDetails(privateKey: string) {
-    const wallet = new ethers.Wallet(privateKey);
     return {
       address: wallet.address,
+      userId: wallet.user.id,
     };
   }
 

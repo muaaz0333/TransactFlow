@@ -5,11 +5,12 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  Delete, Req, UseGuards,
 } from '@nestjs/common';
 import { WalletsService } from '../wallet services/wallets.service';
 import { CreateWalletDto } from '../dto/create-wallet.dto';
 import { UpdateWalletDto } from '../dto/update-wallet.dto';
+import { AuthGuard } from '../../utils/guards/auth.guard';
 
 @Controller('wallet')
 export class WalletsController {
@@ -20,9 +21,11 @@ export class WalletsController {
     return this.walletsService.createWalletForUser(createWalletDto);
   }
 
-  @Post('/details')
-  getWalletDetails(@Body() body: { privateKey: string }) {
-    return this.walletsService.getWalletDetails(body.privateKey);
+  @UseGuards(AuthGuard)
+  @Get('/me')
+  getWalletDetails(@Req() req) {
+    const userId= req.user.id;
+    return this.walletsService.getMyWallet(userId);
   }
 
   @Get()
