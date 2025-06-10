@@ -1,7 +1,8 @@
 import { User } from '../../users/entities/user.entity';
 import {
   Column,
-  CreateDateColumn, Entity,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,

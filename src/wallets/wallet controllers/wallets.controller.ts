@@ -16,6 +16,7 @@ import { AuthGuard } from '../../utils/guards/auth.guard';
 export class WalletsController {
   constructor(private readonly walletsService: WalletsService) {}
 
+  @UseGuards(AuthGuard)
   @Post('/create')
   create(@Body() createWalletDto: CreateWalletDto) {
     return this.walletsService.createWalletForUser(createWalletDto);
