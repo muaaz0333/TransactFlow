@@ -2,7 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany, OneToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -27,7 +28,7 @@ export class User {
   password: string;
 
   @Column({ default: false })
-  isKycVerified: boolean;
+  isVerified: boolean;
 
   @Column()
   phoneNumber: string;
@@ -47,6 +48,6 @@ export class User {
   @OneToMany(() => Transaction, (t) => t.receiver)
   receivedTransactions: Transaction[];
 
-  @OneToOne(() => Wallet, (w) => w.user, {cascade: true})
+  @OneToOne(() => Wallet, (w) => w.user, { cascade: true })
   wallet: Wallet;
 }
