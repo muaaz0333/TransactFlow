@@ -1,7 +1,8 @@
 import { TransactionStatus } from '../../users/enums/transaction';
 import {
   Column,
-  CreateDateColumn, Entity,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,

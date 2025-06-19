@@ -1,7 +1,8 @@
 import { User } from '../../users/entities/user.entity';
 import {
   Column,
-  CreateDateColumn, Entity,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -17,11 +18,11 @@ export class Wallet {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({type:'varchar'})
+  @Column({ type: 'varchar' })
   address: string;
 
-  @Column({type:'text'})
-  encryptedPrivateKey:string;
+  @Column({ type: 'text' })
+  encryptedPrivateKey: string;
 
   @Column('decimal', { precision: 12, scale: 2, default: 0 })
   balance: number;

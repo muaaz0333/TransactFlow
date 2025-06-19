@@ -59,7 +59,7 @@ export class UsersService {
         );
       }
 
-      if (!user.isKycVerified) {
+      if (!user.isVerified) {
         throw new HttpException(
           'Please verify your email before logging in',
           HttpStatus.FORBIDDEN,
@@ -83,7 +83,7 @@ export class UsersService {
           username: user.username,
           phoneNumber: user.phoneNumber,
           status: user.status,
-          isKycVerified: user.isKycVerified,
+          isVerified: user.isVerified,
         },
       };
     } catch (e) {
@@ -117,11 +117,11 @@ export class UsersService {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
 
-      if (user.isKycVerified) {
+      if (user.isVerified) {
         return 'User is already verified';
       }
 
-      user.isKycVerified = true;
+      user.isVerified = true;
       await this.usersRepo.save(user);
       return 'Email verified Successfully.';
     } catch (e) {
@@ -141,7 +141,7 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    if (user.isKycVerified) {
+    if (user.isVerified) {
       throw new HttpException('User already verified', HttpStatus.FORBIDDEN);
     }
 

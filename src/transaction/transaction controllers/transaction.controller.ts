@@ -8,8 +8,8 @@ export class TransactionController {
 
   @UseGuards(AuthGuard)
   @Post('/send')
-  async sendTransaction(@Req() req, @Body() body){
-    const {to, amount}= body;
+  async sendTransaction(@Req() req, @Body() body) {
+    const { to, amount } = body;
     return this.transactionService.performTransaction(req.user.id, to, amount);
   }
 }

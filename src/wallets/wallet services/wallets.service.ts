@@ -24,7 +24,7 @@ export class WalletsService {
     const { userId, password } = createWalletDto;
     const existingWallet = await this.walletRepo.findOne({
       where: { user: { id: userId } },
-      relations: ['user']
+      relations: ['user'],
     });
     if (existingWallet) {
       throw new HttpException(
